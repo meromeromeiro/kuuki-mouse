@@ -54,15 +54,14 @@ class App(PynputMouseController):
         # self.v_y *= self.attenuation_coefficient
 
         delta_x = alpha - self._alpha
-        if delta_x < -300:
-            delta_x += 360
-        if delta_x > 300:
-            delta_x -= 360
-        delta_y = beta - self._beta    
-        
+        if abs(delta_x) > 90:
+            delta_x = 0
+        delta_y = beta - self._beta
+        if abs(delta_y) > 90:
+            delta_y = 0
+
         self.v_x = delta_x * self.sensitivity
         self.v_y = delta_y * self.sensitivity
-        
 
         # print(self.v_x,a_dash_dash[0].item(), time_diff, self.sensitivity)
         # # print(self.v_x, self.v_y)
@@ -85,7 +84,14 @@ class App(PynputMouseController):
         # if self.v_y*self.scale > 10 or self.v_y*self.scale < -10:
         #     self.v_y = 0
         # print((self.v_x) * self.scale, (self.v_y) * self.scale)
-        self.move_mouse(-int(self.v_x * self.scale), -int(self.v_y * self.scale))
+        self.move_mouse(
+            -int(self.v_x * self.scale),
+            (
+                -int(self.v_y * self.scale)
+                if self._gamma < 0
+                else int(self.v_y * self.scale)
+            ),
+        )
 
 
 app = App()
@@ -102,9 +108,11 @@ def get_data(x: float, y: float, z: float, alpha: float, beta: float, gamma: flo
     app.update_data(x, y, z, alpha, beta, gamma)
     app.update_mouse()
 
+
 def get_message(message: str):
     # print(f"message{message}")
     app.click_mouse(message)
+
 
 # if __name__ == "__main__":
 #     try:

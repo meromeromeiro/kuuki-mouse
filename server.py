@@ -3,9 +3,7 @@ import asyncio
 import ssl
 import websockets
 import http.server
-import socketserver
 import os
-import time
 import json
 from pathlib import Path
 
@@ -81,6 +79,7 @@ def http_server_handler(path, request_headers):
     """
     一个回退函数，用于处理非WebSocket的HTTP请求。
     """
+    
     if "Upgrade" in request_headers and request_headers["Upgrade"] == "websocket":
         return  # 让 `websockets` 库处理它
 

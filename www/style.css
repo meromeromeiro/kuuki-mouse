@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align to top */
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #0056b3;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.sensor-data p {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.sensor-data span {
+    font-weight: bold;
+    color: #d9534f;
+    min-width: 80px; /* Ensure consistent width for numbers */
+    display: inline-block; /* For min-width to take effect */
+    text-align: right; /* Align numbers to the right */
+    padding-right: 10px; /* Spacing */
+}
+
+#startSensors {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#startSensors:hover {
+    background-color: #0056b3;
+}
+
+#status {
+    text-align: center;
+    margin-top: 15px;
+    font-style: italic;
+    color: #555;
+}

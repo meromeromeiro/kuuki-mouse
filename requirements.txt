@@ -1,0 +1,9 @@
+# pip install -r requirements.txt
+
+websockets==12.0
+cryptography
+# grpcio
+# grpcio-tools
+pynput
+
+pyinstaller
