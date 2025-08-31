@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>点击屏幕任意位置</title>
+    <style>
+        /* 使用Flexbox布局实现文字在屏幕中间绝对居中 */
+        body {
+            margin: auto;
+            /* 设置body高度为100%的视口高度 */
+            height: 100vh;
+            /* 设置为弹性布局 */
+            display: flex;
+            /* 水平居中 */
+            justify-content: center;
+            /* 垂直居中 */
+            align-items: center;
+            /* 设置背景颜色（可选） */
+            background-color: #f0f0f0;
+            /* 设置字体（可选） */
+            font-family: sans-serif;
+            /* 设置光标样式为手型（提示可点击） */
+            cursor: pointer;
+            overflow: hidden;
+        }
+        /* 可以给文字加点样式让它更明显 */
+        #hintText {
+            font-size: 18px;
+            color: #333;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body id="body">
+    <div id="hintText">点击屏幕内任意位置即为鼠标左键</div>
+    <script src="script.js"></script>
+</body>
+</html>

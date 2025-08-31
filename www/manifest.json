@@ -1,0 +1,15 @@
+{
+    "short_name": "Kuuki Mouse",
+    "name": "Kuuki Mouse",
+    "icons": [
+        {
+            "src": "https://avemujica.bang-dream.com/wordpress/wp-content/themes/avemujica/img/moon-r.svg",
+            "sizes": "64x64 32x32 24x24 16x16 192x192 512x512",
+            "type": "image/svg+xml"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
+}
