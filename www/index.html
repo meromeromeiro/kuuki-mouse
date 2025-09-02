@@ -23,6 +23,8 @@
             /* 设置光标样式为手型（提示可点击） */
             cursor: pointer;
             overflow: hidden;
+            flex: 1;
+            flex-direction: column;
         }
         /* 可以给文字加点样式让它更明显 */
         #hintText {
@@ -33,10 +35,21 @@
             border-radius: 5px;
             background-color: #fff;
         }
+        #inputText {
+            width: 80%; /* 宽度占视口宽度的80% */
+            height: 60px; /* 设置绝对高度 */
+            padding: 16px 20px; /* 增加内边距，使触摸区域更大 */
+            font-size: 24px; /* 增大字体 */
+            box-sizing: border-box; /* 确保padding不影响总宽度 */
+            border: 2px solid #ccc; /* 更粗的边框便于识别 */
+            border-radius: 10px; /* 圆角 */
+            text-align: center; /* 文字居中 */
+        }
     </style>
 </head>
 <body id="body">
     <div id="hintText">点击屏幕内任意位置即为鼠标左键</div>
+    <input id="inputText"></input>
     <script src="script.js"></script>
 </body>
 </html>

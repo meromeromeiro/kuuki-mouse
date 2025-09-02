@@ -9,7 +9,8 @@ from pathlib import Path
 
 from cert import generate_self_signed_cert
 
-from app import get_data, get_message
+from app import get_data, mouse_event, text_event, key_event
+
 # from data_logger import get_data
 
 
@@ -20,6 +21,7 @@ CERT_FILE = "cert.pem"
 KEY_FILE = "key.pem"
 WWW_DIRECTORY = "www"
 
+
 # --- WebSocket 处理器 ---
 async def websocket_handler(websocket, path):
     """处理WebSocket连接的异步函数。"""
@@ -29,22 +31,37 @@ async def websocket_handler(websocket, path):
             # print(message)
             try:
                 data_dict = json.loads(message)
-                if data_dict.get("message"):
-                    get_message(data_dict.get("message"))
-                get_data(data_dict['x'], data_dict['y'], data_dict['z'], data_dict['alpha'], data_dict['beta'], data_dict['gamma'])
+                if data_dict.get("mouse"):
+                    mouse_event(data_dict.get("mouse"))
+                elif data_dict.get("text"):
+                    text_event(data_dict.get("text"))
+                elif data_dict.get("key"):
+                    key_event(data_dict.get("key"))
+                else:
+                    get_data(
+                        data_dict["x"],
+                        data_dict["y"],
+                        data_dict["z"],
+                        data_dict["alpha"],
+                        data_dict["beta"],
+                        data_dict["gamma"],
+                    )
             except Exception as e:
-                print(e)
+                print("error:", e)
             # print(f"{time.time()}收到消息: {message}")
     except websockets.exceptions.ConnectionClosed as e:
         print(f"WebSocket 连接已关闭: {e}")
     except Exception as e:
         print(f"WebSocket 处理中发生错误: {e}")
 
+
 # --- HTTP 文件服务处理器 ---
 class FileHandler(http.server.SimpleHTTPRequestHandler):
     """处理HTTP请求并提供文件的处理器。"""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=WWW_DIRECTORY, **kwargs)
+
 
 # --- 主函数 ---
 async def main():
@@ -70,16 +87,17 @@ async def main():
         HTTP_PORT,
         ssl=ssl_context,
         # 当请求不是WebSocket升级请求时，回退到HTTP处理器
-        process_request=http_server_handler
+        process_request=http_server_handler,
     ):
         print(f"HTTPS 和 WebSocket 服务器正在运行在 wss://{HOST}:{HTTP_PORT}")
         await asyncio.Future()  # 永远运行
+
 
 def http_server_handler(path, request_headers):
     """
     一个回退函数，用于处理非WebSocket的HTTP请求。
     """
-    
+
     if "Upgrade" in request_headers and request_headers["Upgrade"] == "websocket":
         return  # 让 `websockets` 库处理它
 
@@ -88,12 +106,14 @@ def http_server_handler(path, request_headers):
     # 这里我们只提供一个基本的演示。
     if path == "/":
         path = "/index.html"
-    
-    file_path = os.path.abspath(os.path.join(WWW_DIRECTORY, path.lstrip('/')))
 
-    if os.path.commonpath([file_path, os.path.abspath(WWW_DIRECTORY)]) != os.path.abspath(WWW_DIRECTORY):
+    file_path = os.path.abspath(os.path.join(WWW_DIRECTORY, path.lstrip("/")))
+
+    if os.path.commonpath(
+        [file_path, os.path.abspath(WWW_DIRECTORY)]
+    ) != os.path.abspath(WWW_DIRECTORY):
         return (http.HTTPStatus.FORBIDDEN, [], b"Forbidden")
-        
+
     if os.path.exists(file_path) and os.path.isfile(file_path):
         content_type = {
             ".html": "text/html",

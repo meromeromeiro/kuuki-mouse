@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 获得显示区Element
     const body = document.getElementById('body');
 
+    const hintText = document.getElementById('hintText');
+    const inputText = document.getElementById('inputText');
     const accelXElem = document.getElementById('accelX');
     const accelYElem = document.getElementById('accelY');
     const accelZElem = document.getElementById('accelZ');
@@ -79,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function sendMessage() {
         if (socket && socket.readyState === WebSocket.OPEN) {
             socket.send(JSON.stringify({
-                message: 'left',
+                mouse: 'left click',
             }));
         }
     }
@@ -207,9 +209,46 @@ document.addEventListener('DOMContentLoaded', () => {
         if (startButton) startButton.style.display = 'none';
     }
 
-
+    // 为body添加
     if (body) {
         body.addEventListener('click', sendMessage)
+    }
+
+    if (inputText) {
+        // 为输入框添加keydown事件监听器
+        inputText.addEventListener('keydown', function (event) {
+            // 检查是否按下Enter键 (keyCode 13或key 'Enter')
+            console.log(event)
+            hintText.innerHTML = "" + event.key;
+
+            if (event.key === 'Enter' || event.keyCode === 13) {
+                // 阻止默认行为（如表单提交）
+                event.preventDefault();
+                // 获取输入框的当前值
+                const inputValue = inputText.value;
+                // 打印输入内容到控制台
+                // console.log('输入内容:', inputValue);
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify({
+                        text: inputValue || "\n",
+                    }));
+                }
+                // 清空输入框内容[2](@ref)
+                inputText.value = '';
+                // 保持焦点在输入框上[7](@ref)
+                inputText.focus();
+            } else if (event.key === 'Backspace' && inputText.value === '') {
+                console.log(inputText.value)
+                event.preventDefault();
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify({
+                        key: event.key,
+                    }));
+                }
+                inputText.value = '';
+                inputText.focus();
+            }
+        });
     }
 
     if (startButton) {

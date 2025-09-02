@@ -88,8 +88,8 @@ class App(PynputMouseController):
             -int(self.v_x * self.scale),
             (
                 -int(self.v_y * self.scale)
-                if self._gamma < 0
-                else int(self.v_y * self.scale)
+                #if self._gamma < 0
+                #else int(self.v_y * self.scale)
             ),
         )
 
@@ -109,11 +109,14 @@ def get_data(x: float, y: float, z: float, alpha: float, beta: float, gamma: flo
     app.update_mouse()
 
 
-def get_message(message: str):
-    # print(f"message{message}")
+def mouse_event(message: str):
     app.click_mouse(message)
 
+def text_event(message:str):
+    app.type_text(message)
 
+def key_event(message:str):
+    app.press_key(message)
 # if __name__ == "__main__":
 #     try:
 #         asyncio.run(main())
