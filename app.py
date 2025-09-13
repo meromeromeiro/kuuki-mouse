@@ -2,14 +2,14 @@ import asyncio
 import time
 
 # from grpc_remote_control.controller import GrpcController
-from controller import PynputMouseController
+from controller import PynputMouseKeyboardController
 
 # from model import get_gravity_float, to_tensor, process_tensor
 
 # from server import main
 
 
-class App(PynputMouseController):
+class App(PynputMouseKeyboardController):
     def __init__(
         self,
         sensitivity: float = 300,
@@ -117,6 +117,11 @@ def text_event(message:str):
 
 def key_event(message:str):
     app.press_key(message)
+    
+def key_down(key:str):
+    app.key_down(key)
+def key_up(key:str):
+    app.key_up(key)
 # if __name__ == "__main__":
 #     try:
 #         asyncio.run(main())
