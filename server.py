@@ -9,7 +9,8 @@ from pathlib import Path
 
 from cert import generate_self_signed_cert
 
-from app import get_data, mouse_event, text_event, key_event
+from app import get_data, mouse_event, text_event, key_event, key_up, key_down
+from get_local_ip import get_local_ip
 
 # from data_logger import get_data
 
@@ -37,11 +38,15 @@ async def websocket_handler(websocket, path):
                     text_event(data_dict.get("text"))
                 elif data_dict.get("key"):
                     key_event(data_dict.get("key"))
+                elif data_dict.get("keyup"):
+                    key_up(data_dict.get("keyup"))
+                elif data_dict.get("keydown"):
+                    key_down(data_dict.get("keydown"))
                 else:
                     get_data(
-                        data_dict["x"],
-                        data_dict["y"],
-                        data_dict["z"],
+                        0,  # data_dict["x"],
+                        0,  # data_dict["y"],
+                        0,  # data_dict["z"],
                         data_dict["alpha"],
                         data_dict["beta"],
                         data_dict["gamma"],
@@ -134,6 +139,8 @@ def http_server_handler(path, request_headers):
 
 
 if __name__ == "__main__":
+    print(f"请访问 https://{get_local_ip()}:{HTTP_PORT}")
+    # print(f"请添加 wss://{get_local_ip()}:{HTTP_PORT}")
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
